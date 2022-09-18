@@ -56,9 +56,14 @@ class User extends Authenticatable
   {
       return $this->belongsTo(Rol::class,"rols_id");
   }
+  public function rest_rooms()
+  {
+      return $this->belongsTo(RestRoom::class,"auditors_id");
+  }
+  
   public function departments()
   {
-      return $this->belongsTo(Rol::class,"departments_id");
+      return $this->belongsTo(Departments::class,"departments_id");
   }
 
        /**

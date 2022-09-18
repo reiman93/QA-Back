@@ -32,5 +32,13 @@ class RestRoom extends Model
     {
         return $this->belongsTo(Relapse_action::class,'corrective_action');
     }
-
+  /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'auditor');
+    }
 }
