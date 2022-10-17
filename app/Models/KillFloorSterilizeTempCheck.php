@@ -20,11 +20,16 @@ class KillFloorSterilizeTempCheck extends Model
         'relapse_actions_id',
         'priot_tostar_up',
         'temperature',
-        'period',
-/*         'temperature1', */
-        /* 'period2', */
-/*         'temperature2', */
-      /*   'period3', */
-/*         'temperature3', */
+        'period'
     ];
+
+           /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'auditor_id');
+    }
 }

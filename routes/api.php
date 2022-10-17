@@ -247,7 +247,7 @@ Route::post('/storeHoldTag', [QAHoldTagLogController::class,'paginateFilter'])->
 
 /*/*QualityAssuranceKosherCheckListController*/
 Route::apiResource('quality-kosher', QualityAssuranceKosherCheckListController::class)->middleware('api');
-Route::post('/storeQualityKosher', [QAHoldTagLogController::class,'paginateFilter'])->name('storeQualityKosher');
+Route::post('/storeQualityKosher', [QualityAssuranceKosherCheckListController::class,'paginateFilter'])->name('storeQualityKosher');
 
 /*RandomAuditSampleTime*/
 Route::apiResource('random-audit', RandomAuditSampleTimeController::class)->middleware('api');

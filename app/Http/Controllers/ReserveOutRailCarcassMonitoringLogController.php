@@ -17,14 +17,7 @@ class ReserveOutRailCarcassMonitoringLogController extends Controller
     public function index(Request $request)
     {
    
-       $data = ReserveOutRailCarcassMonitoringLog::all();
-     /*  $total=count(ReserveOutRailCarcassMonitoringLog::all());
-       $cantPages=intdiv($total,$limit);
-       $resto=($total%$limit);
-       if($resto > 0){
-        $cantPages++;
-       }*/
-       
+        $data = ReserveOutRailCarcassMonitoringLog::all();
         if($request->wantsJson()){
             return response()->json(array('data'=>$data,'success'=>true,'status'=>200));//'cantPages'=>$cantPages,'offset'=>$offset
         }else{
@@ -40,16 +33,6 @@ class ReserveOutRailCarcassMonitoringLogController extends Controller
      */
     public function paginateFilter(Request $request)
     {
-       /* if($request->take){
-            $limit=$request->take;
-          }
-
-          if($request->skip){
-            $offset=$request->skip;
-          }else{
-              $offset=0;
-          }*/
-         // $currentPage=intval($request->currentPage);
         if($request->orSearchFields){
             switch ($request->orSearchFields[0]['operation']) {
                 case 'distint':
@@ -67,25 +50,31 @@ class ReserveOutRailCarcassMonitoringLogController extends Controller
                     
                     break;
             }
-            $data = ReserveOutRailCarcassMonitoringLog::where('ReserveOutRailCarcassMonitoringLogs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = ReserveOutRailCarcassMonitoringLog::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(ReserveOutRailCarcassMonitoringLog::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = ReserveOutRailCarcassMonitoringLog::with('users')->where('reserve_out_rail_carcass_monitoring_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(ReserveOutRailCarcassMonitoringLog::with('users')->where('reserve_out_rail_carcass_monitoring_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
         }else{
-            $data = ReserveOutRailCarcassMonitoringLog::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = ReserveOutRailCarcassMonitoringLog::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(ReserveOutRailCarcassMonitoringLog::all());
         }
       
-         
-          $total=count(ReserveOutRailCarcassMonitoringLog::all());
-         // $cantPages=intdiv($total,$limit);
-         // $resto=($total%$limit);
-         // $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-         /* if($resto > 0){
-           $cantPages++;
-          }*/
            if($request->wantsJson()){
-              // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-               return response()->json(array('data'=>array('ReserveOutRailCarcassMonitoringLog'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
-            }else{
-              // return view('modules.ReserveOutRailCarcassMonitoringLog.index',compact('data','offset','cantPages','total'));
-           }
+               return response()->json(array('data'=>array('reserve_out'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+            }
     }
 
 

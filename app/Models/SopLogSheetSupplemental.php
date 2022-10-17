@@ -24,4 +24,14 @@ class SopLogSheetSupplemental extends Model
          'Further_planned_actions',
          'prod_usage_kill_box'
     ];
+
+         /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'user_auditor');
+    }
 }

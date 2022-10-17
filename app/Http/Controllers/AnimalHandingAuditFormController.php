@@ -42,36 +42,56 @@ class AnimalHandingAuditFormController extends Controller
         }
     }
 
-  /**
+   /**
      * Data with pagin and filters.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function paginateAnimalHandingFilter(Request $request)
+    public function paginateFilter(Request $request)
     {
-        if($request->limit){
-            $limit=$request->limit;
-          }else{
-              $limit=5;
-          }
-          if($request->offset){
-            $offset=$request->offset;
-          }else{
-              $offset=0;
-          }
-          $currentPage=intval($request->currentPage);
-          $data = AnimalHandingAuditForm::all()->skip(intval($offset))->take(intval($limit))->toArray();
-          $total=count(AnimalHandingAuditForm::all());
-          $cantPages=intdiv($total,$limit);
-          $resto=($total%$limit);
-          $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-          if($resto > 0){
-           $cantPages++;
-          }
+        if($request->orSearchFields){
+            switch ($request->orSearchFields[0]['operation']) {
+                case 'distint':
+                    $operator="<>";
+                    $search=$request->orSearchFields[0]['values'][0];
+                    break;
+                case 'equals':
+                       $operator="=";
+                       $search=$request->orSearchFields[0]['values'][0];
+                case 'contains':
+                       $operator="LIKE";
+                       $search="%".$request->orSearchFields[0]['values'][0]."%";
+                       break;
+                default:
+                    
+                    break;
+            }
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = AnimalHandingAuditForm::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(AnimalHandingAuditForm::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = AnimalHandingAuditForm::with('users')->where('animal_handing_audit_forms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(AnimalHandingAuditForm::with('users')->where('animal_handing_audit_forms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
+        }else{
+            $data = AnimalHandingAuditForm::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(AnimalHandingAuditForm::all());
+        }
+      
            if($request->wantsJson()){
-               return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-           }
+               return response()->json(array('data'=>array('animal_handing'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+            }
     }
 
 

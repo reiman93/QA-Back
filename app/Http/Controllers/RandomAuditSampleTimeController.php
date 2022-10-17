@@ -40,7 +40,6 @@ class RandomAuditSampleTimeController extends Controller
             return view('modules.RandomAuditSampleTime.index',compact('data','offset','cantPages','total'));
         }
     }
-
   /**
      * Data with pagin and filters.
      *
@@ -49,16 +48,6 @@ class RandomAuditSampleTimeController extends Controller
      */
     public function paginateFilter(Request $request)
     {
-       /* if($request->take){
-            $limit=$request->take;
-          }
-
-          if($request->skip){
-            $offset=$request->skip;
-          }else{
-              $offset=0;
-          }*/
-         // $currentPage=intval($request->currentPage);
         if($request->orSearchFields){
             switch ($request->orSearchFields[0]['operation']) {
                 case 'distint':
@@ -76,25 +65,31 @@ class RandomAuditSampleTimeController extends Controller
                     
                     break;
             }
-            $data = RandomAuditSampleTime::where('RandomAuditSampleTimes.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = RestRoom::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(RestRoom::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = RestRoom::with('users')->where('rest_rooms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(RestRoom::with('users')->where('rest_rooms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
         }else{
-            $data = RandomAuditSampleTime::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = RestRoom::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(RestRoom::all());
         }
       
-         
-          $total=count(RandomAuditSampleTime::all());
-         // $cantPages=intdiv($total,$limit);
-         // $resto=($total%$limit);
-         // $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-         /* if($resto > 0){
-           $cantPages++;
-          }*/
            if($request->wantsJson()){
-              // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-               return response()->json(array('data'=>array('RandomAuditSampleTime'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
-            }else{
-              // return view('modules.RandomAuditSampleTime.index',compact('data','offset','cantPages','total'));
-           }
+               return response()->json(array('data'=>array('rest_room'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+            }
     }
 
 

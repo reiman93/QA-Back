@@ -15,26 +15,7 @@ class QualityAssuranceKosherCheckListController extends Controller
      */
     public function index(Request $request)
     {
-   
-      /*  if($request->limit){
-         $limit=$request->limit;
-       }else{
-           $limit=5;
-       }
-       if($request->offset){
-         $offset=$request->offset;
-       }else{
-           $offset=0;
-       }*/
-      // $data = QualityAssuranceKosherCheckList::all()->skip($offset)->take($limit);
        $data = QualityAssuranceKosherCheckList::all();
-     /*  $total=count(QualityAssuranceKosherCheckList::all());
-       $cantPages=intdiv($total,$limit);
-       $resto=($total%$limit);
-       if($resto > 0){
-        $cantPages++;
-       }*/
-       
         if($request->wantsJson()){
             return response()->json(array('data'=>$data,'success'=>true,'status'=>200));//'cantPages'=>$cantPages,'offset'=>$offset
         }else{
@@ -42,7 +23,7 @@ class QualityAssuranceKosherCheckListController extends Controller
         }
     }
 
-  /**
+   /**
      * Data with pagin and filters.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -50,16 +31,6 @@ class QualityAssuranceKosherCheckListController extends Controller
      */
     public function paginateFilter(Request $request)
     {
-       /* if($request->take){
-            $limit=$request->take;
-          }
-
-          if($request->skip){
-            $offset=$request->skip;
-          }else{
-              $offset=0;
-          }*/
-         // $currentPage=intval($request->currentPage);
         if($request->orSearchFields){
             switch ($request->orSearchFields[0]['operation']) {
                 case 'distint':
@@ -77,25 +48,31 @@ class QualityAssuranceKosherCheckListController extends Controller
                     
                     break;
             }
-            $data = QualityAssuranceKosherCheckList::where('QualityAssuranceKosherCheckLists.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = QualityAssuranceKosherCheckList::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(QualityAssuranceKosherCheckList::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = QualityAssuranceKosherCheckList::with('users')->where('quality_assurance_kosher_check_lists.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(QualityAssuranceKosherCheckList::with('users')->where('quality_assurance_kosher_check_lists.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
         }else{
-            $data = QualityAssuranceKosherCheckList::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = QualityAssuranceKosherCheckList::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(QualityAssuranceKosherCheckList::all());
         }
       
-         
-          $total=count(QualityAssuranceKosherCheckList::all());
-         // $cantPages=intdiv($total,$limit);
-         // $resto=($total%$limit);
-         // $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-         /* if($resto > 0){
-           $cantPages++;
-          }*/
            if($request->wantsJson()){
-              // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-               return response()->json(array('data'=>array('QualityAssuranceKosherCheckList'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
-            }else{
-              // return view('modules.QualityAssuranceKosherCheckList.index',compact('data','offset','cantPages','total'));
-           }
+               return response()->json(array('data'=>array('kosher'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+            }
     }
 
 

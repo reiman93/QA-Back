@@ -24,11 +24,13 @@ class SlugtherFloorGattleChangeMonitorSheet extends Model
    
     ];
 
-    /*
-    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-    */
-   public function monitored_by()
-   {
-       return $this->belongsTo(Relapse_action::class,'monitored_by');
-   }
+    /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'monitored_by');
+    }
 }

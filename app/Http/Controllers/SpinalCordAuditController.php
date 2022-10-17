@@ -16,30 +16,6 @@ class SpinalCordAuditController extends Controller
     public function index(Request $request)
     {
    
-      /*  if($request->limit){
-         $limit=$request->limit;
-       }else{
-           $limit=5;
-       }
-       if($request->offset){
-         $offset=$request->offset;
-       }else{
-           $offset=0;
-       }*/
-      // $data = SpinalCordAudit::all()->skip($offset)->take($limit);
-       $data = SpinalCordAudit::all();
-     /*  $total=count(SpinalCordAudit::all());
-       $cantPages=intdiv($total,$limit);
-       $resto=($total%$limit);
-       if($resto > 0){
-        $cantPages++;
-       }*/
-       
-        if($request->wantsJson()){
-            return response()->json(array('data'=>$data,'success'=>true,'status'=>200));//'cantPages'=>$cantPages,'offset'=>$offset
-        }else{
-            return view('modules.SpinalCordAudit.index',compact('data','offset','cantPages','total'));
-        }
     }
 
   /**
@@ -50,16 +26,6 @@ class SpinalCordAuditController extends Controller
      */
     public function paginateFilter(Request $request)
     {
-       /* if($request->take){
-            $limit=$request->take;
-          }
-
-          if($request->skip){
-            $offset=$request->skip;
-          }else{
-              $offset=0;
-          }*/
-         // $currentPage=intval($request->currentPage);
         if($request->orSearchFields){
             switch ($request->orSearchFields[0]['operation']) {
                 case 'distint':
@@ -77,25 +43,31 @@ class SpinalCordAuditController extends Controller
                     
                     break;
             }
-            $data = SpinalCordAudit::where('SpinalCordAudits.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = SpinalCordAudit::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(SpinalCordAudit::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = SpinalCordAudit::with('users')->where('spinal_cord_audits.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(SpinalCordAudit::with('users')->where('spinal_cord_audits.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
         }else{
-            $data = SpinalCordAudit::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = SpinalCordAudit::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(SpinalCordAudit::all());
         }
       
-         
-          $total=count(SpinalCordAudit::all());
-         // $cantPages=intdiv($total,$limit);
-         // $resto=($total%$limit);
-         // $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-         /* if($resto > 0){
-           $cantPages++;
-          }*/
            if($request->wantsJson()){
-              // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-               return response()->json(array('data'=>array('SpinalCordAudit'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
-            }else{
-              // return view('modules.SpinalCordAudit.index',compact('data','offset','cantPages','total'));
-           }
+               return response()->json(array('data'=>array('spinal_cord'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+            }
     }
 
 

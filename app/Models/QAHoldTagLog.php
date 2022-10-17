@@ -23,4 +23,14 @@ class QAHoldTagLog extends Model
         'tag_pulled',
         'verifyed_by'
     ];
+
+        /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'verifyed_by');
+    }
 }

@@ -36,16 +36,6 @@ class SlugtherFloorGattleChangeMonitorSheetController extends Controller
      */
     public function paginateFilter(Request $request)
     {
-       /* if($request->take){
-            $limit=$request->take;
-          }
-
-          if($request->skip){
-            $offset=$request->skip;
-          }else{
-              $offset=0;
-          }*/
-         // $currentPage=intval($request->currentPage);
         if($request->orSearchFields){
             switch ($request->orSearchFields[0]['operation']) {
                 case 'distint':
@@ -63,25 +53,31 @@ class SlugtherFloorGattleChangeMonitorSheetController extends Controller
                     
                     break;
             }
-            $data = SlugtherFloorGattleChangeMonitorSheet::where('SlugtherFloorGattleChangeMonitorSheets.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = SlugtherFloorGattleChangeMonitorSheet::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(SlugtherFloorGattleChangeMonitorSheet::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = SlugtherFloorGattleChangeMonitorSheet::with('users')->where('slugther_floor_gattle_change_monitor_sheets.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(SlugtherFloorGattleChangeMonitorSheet::with('users')->where('slugther_floor_gattle_change_monitor_sheets.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
         }else{
-            $data = SlugtherFloorGattleChangeMonitorSheet::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = SlugtherFloorGattleChangeMonitorSheet::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(SlugtherFloorGattleChangeMonitorSheet::all());
         }
       
-         
-          $total=count(SlugtherFloorGattleChangeMonitorSheet::all());
-         // $cantPages=intdiv($total,$limit);
-         // $resto=($total%$limit);
-         // $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-         /* if($resto > 0){
-           $cantPages++;
-          }*/
            if($request->wantsJson()){
-              // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-               return response()->json(array('data'=>array('SlugtherFloorGattleChangeMonitorSheet'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
-            }else{
-              // return view('modules.SlugtherFloorGattleChangeMonitorSheet.index',compact('data','offset','cantPages','total'));
-           }
+               return response()->json(array('data'=>array('slugther_floor_gattle'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+            }
     }
 
 

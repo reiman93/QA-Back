@@ -31,7 +31,7 @@ class VisualCheckSpinalCordAndSheath extends Model
         return $this->belongsTo(User::class,'qa_notified');
     }
 
-    public function qa_id()
+    public function users()
     {
         return $this->belongsTo(User::class,'qa_id');
     }

@@ -26,4 +26,14 @@ class ReserveOutRailCarcassMonitoringLog extends Model
         'zero_tolerance',
         'auditor_id_user'        
     ];
+
+        /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'auditor_id_user');
+    }
 }

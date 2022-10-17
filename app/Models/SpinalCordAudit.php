@@ -26,4 +26,14 @@ class SpinalCordAudit extends Model
         
         'inked_missplits',       
     ];
+
+      /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'users_id');
+    }
 }

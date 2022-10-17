@@ -13,6 +13,17 @@ class RandomAuditSampleTime extends Model
         'verification_type',
         'random_time',
         'random_num',
-        'random_code'
+        'random_code',
+       "users_id"
     ];
+
+      /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'users_id');
+    }
 }

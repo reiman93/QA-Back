@@ -40,4 +40,9 @@ class QualityAssuranceKosherCheckList extends Model
         
         'effectivenss_of_cut_kosher'
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class,'monitor_user_id');
+    }
 }

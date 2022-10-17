@@ -27,4 +27,14 @@ class KillFloorSterilizeTemperatureChecks extends Model
         'temperature3',
         'corrective_actions_taked'
     ];
+
+        /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'auditor_id');
+    }
 }
