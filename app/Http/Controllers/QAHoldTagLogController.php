@@ -63,8 +63,8 @@ class QAHoldTagLogController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = QAHoldTagLog::with('users')->where('q_a_hold_tag_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(QAHoldTagLog::with('users')->where('q_a_hold_tag_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = QAHoldTagLog::with('users')->where('hold_tag_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(QAHoldTagLog::with('users')->where('hold_tag_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{

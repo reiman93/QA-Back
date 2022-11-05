@@ -13,7 +13,7 @@ class CreateRetendsCarcaseForReworksTable extends Migration
      */
     public function up()
     {
-        Schema::create('retends_carcase_for_reworks', function (Blueprint $table) {
+        Schema::create('retends_carcases', function (Blueprint $table) { //retends_carcase_for_reworks
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateRetendsCarcaseForReworksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('retends_carcase_for_reworks');
+        Schema::dropIfExists('retends_carcases');
     }
 }

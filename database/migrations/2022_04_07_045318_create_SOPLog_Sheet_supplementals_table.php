@@ -13,7 +13,7 @@ class CreateSopLogSheetSupplementalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sop_log_sheet_supplementals', function (Blueprint $table) {
+        Schema::create('sop_sheet_supplems', function (Blueprint $table) { //
          $table->id();
           $table->date('date');
           $table->text('decfects_description');
@@ -38,6 +38,6 @@ class CreateSopLogSheetSupplementalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sop_log_sheet_supplementals');
+        Schema::dropIfExists('sop_sheet_supplems');
     }
 }

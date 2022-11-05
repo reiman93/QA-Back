@@ -50,8 +50,8 @@ class SampleRequestTypeController extends Controller
                     
                     break;
             }
-            $data = Sample_request_type::where('sample_request_types.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-            $total=count(Sample_request_type::where('sample_request_types.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            $data = Sample_request_type::where('sample_req_types.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(Sample_request_type::where('sample_req_types.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
         }else{
             $data = Sample_request_type::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
             $total=count(Sample_request_type::all());

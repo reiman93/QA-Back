@@ -13,7 +13,7 @@ class CreatePreOperationalSanitationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pre_operational_sanitations', function (Blueprint $table) {
+        Schema::create('pre_oper_sanitations', function (Blueprint $table) { //pre_operational_sanitations
             $table->engine = 'InnoDB';
             $table->id();
 
@@ -48,6 +48,6 @@ class CreatePreOperationalSanitationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pre_operational_sanitations');
+        Schema::dropIfExists('pre_oper_sanitations');
     }
 }

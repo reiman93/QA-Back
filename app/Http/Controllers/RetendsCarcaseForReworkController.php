@@ -75,7 +75,7 @@ class RetendsCarcaseForReworkController extends Controller
                     
                     break;
             }
-            $data = RetendsCarcaseForReworkController::where('RetendsCarcaseForReworkControllers.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = RetendsCarcaseForReworkController::where('retends_carcases.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }else{
             $data = RetendsCarcaseForReworkController::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }

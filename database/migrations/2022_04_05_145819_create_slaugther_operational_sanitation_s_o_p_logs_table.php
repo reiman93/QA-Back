@@ -13,7 +13,7 @@ class CreateSlaugtherOperationalSanitationSOPLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('slaugther_operational_sanitation_s_o_p_logs', function (Blueprint $table) {
+        Schema::create('slaugther_operationals', function (Blueprint $table) { //slaugther_operational_sanitation_s_o_p_logs
             $table->id();
             $table->dateTime('date');
             $table->string('inform_type');
@@ -43,6 +43,6 @@ class CreateSlaugtherOperationalSanitationSOPLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slaugther_operational_sanitation_s_o_p_logs');
+        Schema::dropIfExists('slaugther_operationals');
     }
 }

@@ -14,7 +14,7 @@ class CreateChlorineNozzleInspectionsTable extends Migration
     public function up()
     {
      
-        Schema::create('chlorine_nozzle_inspections', function (Blueprint $table) {
+        Schema::create('chlorine_nozzles', function (Blueprint $table) { //chlorine_nozzle_inspections
             $table->id();
            
             $table->date('date');
@@ -45,6 +45,6 @@ class CreateChlorineNozzleInspectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chlorine_nozzle_inspections');
+        Schema::dropIfExists('chlorine_nozzles');
     }
 }

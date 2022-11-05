@@ -13,7 +13,7 @@ class CreateSampleRequestForms extends Migration
      */
     public function up()
     {
-        Schema::create('sample_request_forms', function (Blueprint $table) {
+        Schema::create('sample_req_forms', function (Blueprint $table) { //sample_request_forms
             $table->id();
 
             $table->string('name');
@@ -50,6 +50,6 @@ class CreateSampleRequestForms extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sample_request_forms');
+        Schema::dropIfExists('sample_req_forms');
     }
 }

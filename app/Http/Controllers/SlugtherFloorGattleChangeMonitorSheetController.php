@@ -66,8 +66,8 @@ class SlugtherFloorGattleChangeMonitorSheetController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = SlugtherFloorGattleChangeMonitorSheet::with('users')->where('slugther_floor_gattle_change_monitor_sheets.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(SlugtherFloorGattleChangeMonitorSheet::with('users')->where('slugther_floor_gattle_change_monitor_sheets.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = SlugtherFloorGattleChangeMonitorSheet::with('users')->where('slugther_floor_gattles.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(SlugtherFloorGattleChangeMonitorSheet::with('users')->where('slugther_floor_gattles.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{

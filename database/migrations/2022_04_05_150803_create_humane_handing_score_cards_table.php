@@ -13,7 +13,7 @@ class CreateHumaneHandingScoreCardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('humane_handing_score_cards', function (Blueprint $table) {
+        Schema::create('humane_handings', function (Blueprint $table) { //humane_handing_score_cards
            /*'week_ending_date',
         'auditor',
         'revised_by',
@@ -74,6 +74,6 @@ class CreateHumaneHandingScoreCardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('humane_handing_score_cards');
+        Schema::dropIfExists('humane_handings');
     }
 }

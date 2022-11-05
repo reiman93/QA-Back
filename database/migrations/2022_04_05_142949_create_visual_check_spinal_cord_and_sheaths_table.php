@@ -20,7 +20,7 @@ class CreateVisualCheckSpinalCordAndSheathsTable extends Migration
         'qa_notified',
         'qa_id'
          */
-        Schema::create('visual_check_spinal_cord_and_sheaths', function (Blueprint $table) {
+        Schema::create('visual_sheaths', function (Blueprint $table) { //visual_check_spinal_cord_and_sheaths
             $table->id();
             $table->integer('carcase');
             $table->boolean('removed');
@@ -44,6 +44,6 @@ class CreateVisualCheckSpinalCordAndSheathsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('visual_check_spinal_cord_and_sheaths');
+        Schema::dropIfExists('visual_sheaths');
     }
 }

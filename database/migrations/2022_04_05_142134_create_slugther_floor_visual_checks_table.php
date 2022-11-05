@@ -23,7 +23,7 @@ class CreateSlugtherFloorVisualChecksTable extends Migration
      */
     public function up()
     {
-        Schema::create('slugther_floor_visual_checks', function (Blueprint $table) {
+        Schema::create('slugther_floor_visuals', function (Blueprint $table) { //slugther_floor_visual_checks
             $table->id();
            
             $table->string('period');
@@ -51,6 +51,6 @@ class CreateSlugtherFloorVisualChecksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slugther_floor_visual_checks');
+        Schema::dropIfExists('slugther_floor_visuals');
     }
 }

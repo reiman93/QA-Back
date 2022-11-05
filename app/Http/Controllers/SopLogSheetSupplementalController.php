@@ -62,8 +62,8 @@ class SopLogSheetSupplementalController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = SopLogSheetSupplemental::with('users')->where('sop_log_sheet_supplementals.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(SopLogSheetSupplemental::with('users')->where('sop_log_sheet_supplementals.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = SopLogSheetSupplemental::with('users')->where('sop_sheet_supplems.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(SopLogSheetSupplemental::with('users')->where('sop_sheet_supplems.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{

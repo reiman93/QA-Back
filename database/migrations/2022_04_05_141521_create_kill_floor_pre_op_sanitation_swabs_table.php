@@ -15,7 +15,7 @@ class CreateKillFloorPreOpSanitationSwabsTable extends Migration
      */
     public function up()
     {
-        Schema::create('kill_floor_pre_op_sanitation_swabs', function (Blueprint $table) {
+        Schema::create('kill_preop_swabs', function (Blueprint $table) { //kill_floor_pre_op_sanitation_swabs
             $table->id();
             $table->date('date');
 
@@ -44,6 +44,6 @@ class CreateKillFloorPreOpSanitationSwabsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kill_floor_pre_op_sanitation_swabs');
+        Schema::dropIfExists('kill_preop_swabs');
     }
 }

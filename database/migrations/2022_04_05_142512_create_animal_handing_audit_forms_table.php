@@ -13,7 +13,7 @@ class CreateAnimalHandingAuditFormsTable extends Migration
      */
     public function up()
     {
-        Schema::create('animal_handing_audit_forms', function (Blueprint $table) {
+        Schema::create('animal_handings', function (Blueprint $table) { //animal_handing_audit_forms
             $table->id();
             $table->string('plant_number');
             $table->string('haad_count');
@@ -59,6 +59,6 @@ class CreateAnimalHandingAuditFormsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('animal_handing_audit_forms');
+        Schema::dropIfExists('animal_handings');
     }
 }

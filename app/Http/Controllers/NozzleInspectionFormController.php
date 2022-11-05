@@ -77,7 +77,7 @@ class NozzleInspectionFormController extends Controller
                     
                     break;
             }
-            $data = NozzleInspectionForm::where('NozzleInspectionForms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = NozzleInspectionForm::where('nozzle_inspections.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }else{
             $data = NozzleInspectionForm::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }

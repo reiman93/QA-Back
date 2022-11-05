@@ -77,7 +77,7 @@ class SlugtherCcpProxyCeticAcidLogController extends Controller
                     
                     break;
             }
-            $data = SlugtherCcpProxyCeticAcidLog::where('SlugtherCcpProxyCeticAcidLogs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = SlugtherCcpProxyCeticAcidLog::where('slugther_proxy_acids.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }else{
             $data = SlugtherCcpProxyCeticAcidLog::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }

@@ -69,26 +69,26 @@ class RandomAuditSampleTimeController extends Controller
             $this->search= $search;
 
             if($request->orSearchFields[0]['field']=="users"){
-                $data = RestRoom::with('users')->whereHas('users',function($u){
+                $data = RandomAuditSampleTime::with('users')->whereHas('users',function($u){
                     $u->where('name',$this->operator,$this->search);
                 })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
                
-                $total=count(RestRoom::with('users')->whereHas('users',function($u){
+                $total=count(RandomAuditSampleTime::with('users')->whereHas('users',function($u){
                     $u->where('name',$this->operator,$this->search);
                 })->get()->toArray());
             
             }else{
-                $data = RestRoom::with('users')->where('rest_rooms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(RestRoom::with('users')->where('rest_rooms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = RandomAuditSampleTime::with('users')->where('random_audits.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(RandomAuditSampleTime::with('users')->where('random_audits.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{
-            $data = RestRoom::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-            $total=count(RestRoom::all());
+            $data = RandomAuditSampleTime::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(RandomAuditSampleTime::all());
         }
       
            if($request->wantsJson()){
-               return response()->json(array('data'=>array('rest_room'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+               return response()->json(array('data'=>array('random_audit'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
             }
     }
 

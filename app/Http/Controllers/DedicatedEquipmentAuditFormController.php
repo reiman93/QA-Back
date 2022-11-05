@@ -70,26 +70,26 @@ class DedicatedEquipmentAuditFormController extends Controller
             $this->search= $search;
 
             if($request->orSearchFields[0]['field']=="users"){
-                $data = RestRoom::with('users')->whereHas('users',function($u){
+                $data = DedicatedEquipmentAuditForm::with('users')->whereHas('users',function($u){
                     $u->where('name',$this->operator,$this->search);
                 })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
                
-                $total=count(RestRoom::with('users')->whereHas('users',function($u){
+                $total=count(DedicatedEquipmentAuditForm::with('users')->whereHas('users',function($u){
                     $u->where('name',$this->operator,$this->search);
                 })->get()->toArray());
             
             }else{
-                $data = RestRoom::with('users')->where('rest_rooms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(RestRoom::with('users')->where('rest_rooms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = DedicatedEquipmentAuditForm::with('users')->where('dedicated_equipments.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(DedicatedEquipmentAuditForm::with('users')->where('dedicated_equipments.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{
-            $data = RestRoom::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-            $total=count(RestRoom::all());
+            $data = DedicatedEquipmentAuditForm::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(DedicatedEquipmentAuditForm::all());
         }
       
            if($request->wantsJson()){
-               return response()->json(array('data'=>array('rest_room'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+               return response()->json(array('data'=>array('dedicated_equipment'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
             }
     }
 

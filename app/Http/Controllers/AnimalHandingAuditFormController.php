@@ -80,8 +80,8 @@ class AnimalHandingAuditFormController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = AnimalHandingAuditForm::with('users')->where('animal_handing_audit_forms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(AnimalHandingAuditForm::with('users')->where('animal_handing_audit_forms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = AnimalHandingAuditForm::with('users')->where('animal_handings.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(AnimalHandingAuditForm::with('users')->where('animal_handings.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{

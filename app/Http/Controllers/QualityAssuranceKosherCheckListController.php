@@ -61,8 +61,8 @@ class QualityAssuranceKosherCheckListController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = QualityAssuranceKosherCheckList::with('users')->where('quality_assurance_kosher_check_lists.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(QualityAssuranceKosherCheckList::with('users')->where('quality_assurance_kosher_check_lists.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = QualityAssuranceKosherCheckList::with('users')->where('quality_assurances.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(QualityAssuranceKosherCheckList::with('users')->where('quality_assurances.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{

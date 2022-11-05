@@ -57,8 +57,8 @@ class VisualCheckSpinalCordAndSheathController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = VisualCheckSpinalCordAndSheath::with('users')->where('visual_check_spinal_cord_and_sheaths.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(VisualCheckSpinalCordAndSheath::with('users')->where('visual_check_spinal_cord_and_sheaths.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = VisualCheckSpinalCordAndSheath::with('users')->where('visual_sheaths.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(VisualCheckSpinalCordAndSheath::with('users')->where('visual_sheaths.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{

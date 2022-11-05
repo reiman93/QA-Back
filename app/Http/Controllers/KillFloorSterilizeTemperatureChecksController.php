@@ -58,8 +58,8 @@ class KillFloorSterilizeTemperatureChecksController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = KillFloorSterilizeTemperatureChecks::with('users')->where('kill_floor_sterilize_temp_checks.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(KillFloorSterilizeTemperatureChecks::with('users')->where('kill_floor_sterilize_temp_checks.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = KillFloorSterilizeTemperatureChecks::with('users')->where('kill_floor_temps.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(KillFloorSterilizeTemperatureChecks::with('users')->where('kill_floor_temps.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{

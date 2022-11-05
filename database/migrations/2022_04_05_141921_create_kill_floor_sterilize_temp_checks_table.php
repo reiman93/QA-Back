@@ -13,7 +13,7 @@ class CreateKillFloorSterilizeTempChecksTable extends Migration
      */
     public function up()
     {
-        Schema::create('kill_floor_sterilize_temp_checks', function (Blueprint $table) {
+        Schema::create('kill_floor_temps', function (Blueprint $table) { //kill_floor_sterilize_temp_checks
             $table->id();
             $table->date('date');
             $table->time('priot_tostar_up');
@@ -45,6 +45,6 @@ class CreateKillFloorSterilizeTempChecksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kill_floor_sterilize_temp_checks');
+        Schema::dropIfExists('kill_floor_temps');
     }
 }

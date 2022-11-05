@@ -13,7 +13,7 @@ class CreateSlugtherCcps1haccpLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('slugther_ccps1haccp_logs', function (Blueprint $table) {
+        Schema::create('slugther_ccps1', function (Blueprint $table) { //slugther_ccps1haccp_logs
 
 /*        'first_carcase_id_number',
         'date',
@@ -73,6 +73,6 @@ class CreateSlugtherCcps1haccpLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slugther_ccps1haccp_Logs');
+        Schema::dropIfExists('slugther_ccps1');
     }
 }

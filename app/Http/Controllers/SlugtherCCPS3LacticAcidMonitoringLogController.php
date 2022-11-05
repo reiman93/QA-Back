@@ -67,7 +67,7 @@ class SlugtherCCPS3LacticAcidMonitoringLogController extends Controller
                     
                     break;
             }
-            $data = SlugtherCCPS3LacticAcidMonitoringLog::where('SlugtherCCPS3LacticAcidMonitoringLogs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = SlugtherCCPS3LacticAcidMonitoringLog::where('slugther_lactic_acids.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }else{
             $data = SlugtherCCPS3LacticAcidMonitoringLog::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }

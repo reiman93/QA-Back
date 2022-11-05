@@ -31,7 +31,7 @@ class SlugtherCcpProxyCeticAcidLogsTable extends Migration
         'director_general_evaluation',
         'name_director',
         'time_director_aprobation',*/
-        Schema::create('slugther_ccp_proxy_cetic_acid_logs', function (Blueprint $table) {
+        Schema::create('slugther_proxy_acids', function (Blueprint $table) { //slugther_ccp_proxy_cetic_acid_logs
             $table->id();
             $table->integer('first_carcase_id_number');
             $table->date('date');
@@ -71,6 +71,6 @@ class SlugtherCcpProxyCeticAcidLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slugther_ccp_proxy_cetic_acid_logs');
+        Schema::dropIfExists('slugther_proxy_acids');
     }
 }

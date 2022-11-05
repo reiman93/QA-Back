@@ -13,7 +13,7 @@ class CreateNozzleInspectionFormsTable extends Migration
      */
     public function up()
     {
-        Schema::create('nozzle_inspection_forms', function (Blueprint $table) {
+        Schema::create('nozzle_inspections', function (Blueprint $table) { //nozzle_inspection_forms
           
             $table->id();
             $table->dateTime('date');
@@ -52,6 +52,6 @@ class CreateNozzleInspectionFormsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nozzle_inspection_forms');
+        Schema::dropIfExists('nozzle_inspections');
     }
 }

@@ -20,7 +20,7 @@ class CreateQAHoldTagLogsTable extends Migration
         'reason_tag_was_written',
         'product_disposition',
         'tag_pulled',*/
-        Schema::create('q_a_hold_tag_logs', function (Blueprint $table) {
+        Schema::create('hold_tag_logs', function (Blueprint $table) { //q_a_hold_tag_logs
             $table->id();
             $table->date('date');
             $table->string('shift');
@@ -44,6 +44,6 @@ class CreateQAHoldTagLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('q_a_hold_tag_logs');
+        Schema::dropIfExists('hold_tag_logs');
     }
 }

@@ -76,7 +76,7 @@ class KillFloorPreOpSanitationSwabController extends Controller
                     
                     break;
             }
-            $data = KillFloorPreOpSanitationSwab::where('kill_floor_pre_op_sanitation_swabs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = KillFloorPreOpSanitationSwab::where('kill_preop_swabs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }else{
             $data = KillFloorPreOpSanitationSwab::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }
@@ -91,7 +91,7 @@ class KillFloorPreOpSanitationSwabController extends Controller
           }*/
            if($request->wantsJson()){
               // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-               return response()->json(array('data'=>array('KillFloorPreOpSanitationSwabController'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+               return response()->json(array('data'=>array('kill_preop_swabs'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
             }else{
               // return view('modules.KillFloorPreOpSanitationSwabController.index',compact('data','offset','cantPages','total'));
            }

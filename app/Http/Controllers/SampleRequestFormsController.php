@@ -77,8 +77,8 @@ class SampleRequestFormsController extends Controller
                     })->get()->toArray());
             }
             else{
-                $data = Sample_request_forms::with(['state_analisys','users'])->where('sample_request_forms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(Sample_request_forms::with(['state_analisys','users'])->where('sample_request_forms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = Sample_request_forms::with(['state_analisys','users'])->where('sample_req_forms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(Sample_request_forms::with(['state_analisys','users'])->where('sample_req_forms.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
         }else{
             $data = Sample_request_forms::with(['state_analisys','users'])->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();

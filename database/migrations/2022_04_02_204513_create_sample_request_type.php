@@ -13,7 +13,7 @@ class CreateSampleRequestType extends Migration
      */
     public function up()
     {
-        Schema::create('sample_request_types', function (Blueprint $table) {
+        Schema::create('sample_req_types', function (Blueprint $table) { //sample_request_types
             $table->id();
             $table->string('name');
             $table->string('description');
@@ -28,6 +28,6 @@ class CreateSampleRequestType extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sample_request_types');
+        Schema::dropIfExists('sample_req_types');
     }
 }

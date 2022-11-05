@@ -22,7 +22,7 @@ class CreateSlagtherMovementLogsTable extends Migration
         'lot_num',
         'carcases_grag_tag_num',
         'monitored_by'*/
-        Schema::create('slaugther_movement_logs', function (Blueprint $table) {
+        Schema::create('slaugther_movements', function (Blueprint $table) { //slaugther_movement_logs
             $table->id();
             $table->date('date');
             $table->integer('beginig_carcase_tag');
@@ -51,6 +51,6 @@ class CreateSlagtherMovementLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slagther_movement_logs');
+        Schema::dropIfExists('slaugther_movements');
     }
 }

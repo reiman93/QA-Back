@@ -28,7 +28,7 @@ class CreateReserveOutRailCarcassMonitoringLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reserve_out_rail_carcass_monitoring_logs', function (Blueprint $table) {
+        Schema::create('reserve_out_rails', function (Blueprint $table) { //reserve_out_rail_carcass_monitoring_logs
             $table->engine = 'InnoDB';
             $table->id();
             $table->date('date');
@@ -58,6 +58,6 @@ class CreateReserveOutRailCarcassMonitoringLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reserve_out_rail_carcass_monitoring_logs');
+        Schema::dropIfExists('reserve_out_rails');
     }
 }

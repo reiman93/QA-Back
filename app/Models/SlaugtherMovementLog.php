@@ -33,4 +33,14 @@ class SlaugtherMovementLog extends Model
         'carcases_grag_tag_num'
 
     ];
+
+          /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'monitored_by');
+    }
 }

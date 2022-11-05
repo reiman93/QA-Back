@@ -65,8 +65,8 @@ class SlaogtherOperationalSanitationSOPLogController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = SlaogtherOperationalSanitationSOPLog::with('users')->where('slaogther_operational_sanitation_s_o_p_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(SlaogtherOperationalSanitationSOPLog::with('users')->where('slaogther_operational_sanitation_s_o_p_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = SlaogtherOperationalSanitationSOPLog::with('users')->where('slaugther_operationals.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(SlaogtherOperationalSanitationSOPLog::with('users')->where('slaugther_operationals.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{

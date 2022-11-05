@@ -76,7 +76,7 @@ class SlugtherCcps1haccpLogController extends Controller
                     
                     break;
             }
-            $data = SlugtherCcps1haccpLog::where('SlugtherCcps11haccpLogs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = SlugtherCcps1haccpLog::where('slugther_ccps1.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }else{
             $data = SlugtherCcps1haccpLog::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
         }
@@ -91,7 +91,7 @@ class SlugtherCcps1haccpLogController extends Controller
           }*/
            if($request->wantsJson()){
               // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-               return response()->json(array('data'=>array('SlugtherCcps11haccpLog'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+               return response()->json(array('data'=>array('slugther_ccps1'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
             }else{
               // return view('modules.SlugtherCcps11haccpLog.index',compact('data','offset','cantPages','total'));
            }

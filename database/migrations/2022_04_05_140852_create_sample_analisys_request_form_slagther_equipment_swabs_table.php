@@ -13,8 +13,8 @@ class CreateSampleAnalisysRequestFormSlagtherEquipmentSwabsTable extends Migrati
      */
     public function up()
     {
-        Schema::create('sample_analisys_request_form_slagther_equipment_swabs', function (Blueprint $table) {
-            $table->id();
+        Schema::create('sample_req_swabs', function (Blueprint $table) { //sample_analisys_request_form_slagther_equipment_swabs
+            $table->id(); //
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ class CreateSampleAnalisysRequestFormSlagtherEquipmentSwabsTable extends Migrati
      */
     public function down()
     {
-        Schema::dropIfExists('sample_analisys_request_form_slagther_equipment_swabs');
+        Schema::dropIfExists('sample_req_swabs');
     }
 }

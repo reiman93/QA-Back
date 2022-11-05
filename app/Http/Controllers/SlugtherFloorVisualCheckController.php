@@ -80,8 +80,8 @@ class SlugtherFloorVisualCheckController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = SlugtherFloorVisualCheck::with('users')->where('slugther_floor_visual_checks.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(SlugtherFloorVisualCheck::with('users')->where('slugther_floor_visual_checks.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = SlugtherFloorVisualCheck::with('users')->where('slugther_floor_visuals.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(SlugtherFloorVisualCheck::with('users')->where('slugther_floor_visuals.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{

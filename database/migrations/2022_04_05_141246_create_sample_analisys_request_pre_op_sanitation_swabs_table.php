@@ -13,7 +13,7 @@ class CreateSampleAnalisysRequestPreOpSanitationSwabsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sample_analisys_request_pre_op_sanitation_swabs', function (Blueprint $table) {
+        Schema::create('sample_preop_swabs', function (Blueprint $table) { //sample_analisys_request_pre_op_sanitation_swabs
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateSampleAnalisysRequestPreOpSanitationSwabsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sample_analisys_request_pre_op_sanitation_swabs');
+        Schema::dropIfExists('sample_preop_swabs');
     }
 }

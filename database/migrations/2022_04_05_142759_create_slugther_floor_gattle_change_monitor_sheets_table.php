@@ -19,7 +19,7 @@ class CreateSlugtherFloorGattleChangeMonitorSheetsTable extends Migration
          'monitored_by'*/
     public function up()
     {
-        Schema::create('slugther_floor_gattle_change_monitor_sheets', function (Blueprint $table) {
+        Schema::create('slugther_floor_gattles', function (Blueprint $table) { //slugther_floor_gattle_change_monitor_sheets
             $table->id();
             $table->date('date');
             $table->time('time');
@@ -45,6 +45,6 @@ class CreateSlugtherFloorGattleChangeMonitorSheetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slugther_floor_gattle_change_monitor_sheets');
+        Schema::dropIfExists('slugther_floor_gattles');
     }
 }

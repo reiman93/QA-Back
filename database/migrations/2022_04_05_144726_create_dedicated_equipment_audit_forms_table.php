@@ -13,7 +13,7 @@ class CreateDedicatedEquipmentAuditFormsTable extends Migration
      */
     public function up()
     {
-        Schema::create('dedicated_equipment_audit_forms', function (Blueprint $table) {
+        Schema::create('dedicated_equipments', function (Blueprint $table) { //dedicated_equipment_audit_forms
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateDedicatedEquipmentAuditFormsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dedicated_equipment_audit_forms');
+        Schema::dropIfExists('dedicated_equipments');
     }
 }

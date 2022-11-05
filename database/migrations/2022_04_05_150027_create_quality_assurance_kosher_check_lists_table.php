@@ -26,7 +26,7 @@ class CreateQualityAssuranceKosherCheckListsTable extends Migration
         'brisket_belly',
         'prior_to_any',
         'effectivenss_of_cut_kosher'*/
-        Schema::create('quality_assurance_kosher_check_lists', function (Blueprint $table) {
+        Schema::create('quality_assurances', function (Blueprint $table) { //quality_assurance_kosher_check_lists
             $table->id();
             $table->dateTime('date');
             $table->boolean('informrinsed_nife_between_carcase_type');
@@ -53,6 +53,6 @@ class CreateQualityAssuranceKosherCheckListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quality_assurance_kosher_check_lists');
+        Schema::dropIfExists('quality_assurances');
     }
 }

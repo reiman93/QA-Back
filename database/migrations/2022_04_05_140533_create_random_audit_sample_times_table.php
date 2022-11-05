@@ -20,7 +20,7 @@ class CreateRandomAuditSampleTimesTable extends Migration
     */
     public function up()
     {
-        Schema::create('random_audit_sample_times', function (Blueprint $table) {
+        Schema::create('random_audits', function (Blueprint $table) { //random_audit_sample_times
             $table->id();
             $table->date('date');
             $table->string('verification_type');
@@ -38,6 +38,6 @@ class CreateRandomAuditSampleTimesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('random_audit_sample_times');
+        Schema::dropIfExists('random_audits');
     }
 }

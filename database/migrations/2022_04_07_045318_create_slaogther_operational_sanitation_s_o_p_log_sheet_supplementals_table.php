@@ -13,7 +13,7 @@ class CreateSlaogtherOperationalSanitationSOPLogSheetSupplementalsTable extends 
      */
     public function up()
     {
-        Schema::create('slaogther_operational_sanitation_s_o_p_log_sheet_supplementals', function (Blueprint $table) {
+        Schema::create('slaogther_sheet_suppls', function (Blueprint $table) { //slaogther_operational_sanitation_s_o_p_log_sheet_supplementals
            /*       'user_auditor',
         'date',
         'verifyed_by',
@@ -53,6 +53,6 @@ class CreateSlaogtherOperationalSanitationSOPLogSheetSupplementalsTable extends 
      */
     public function down()
     {
-        Schema::dropIfExists('slaogther_operational_sanitation_s_o_p_log_sheet_supplementals');
+        Schema::dropIfExists('slaogther_sheet_suppls');
     }
 }

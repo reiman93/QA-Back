@@ -13,7 +13,7 @@ class CreateSlugtherCCPS3LacticAcidMonitoringLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('slugther_c_c_p_s3_lactic_acid_monitoring_logs', function (Blueprint $table) {
+        Schema::create('slugther_lactic_acids', function (Blueprint $table) { //slugther_c_c_p_s3_lactic_acid_monitoring_logs
           /* 'first_carcase_id_number',
         'date',
         'shift',
@@ -70,6 +70,6 @@ class CreateSlugtherCCPS3LacticAcidMonitoringLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slugther_c_c_p_s3_lactic_acid_monitoring_logs');
+        Schema::dropIfExists('slugther_lactic_acids');
     }
 }

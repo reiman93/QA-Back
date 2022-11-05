@@ -63,8 +63,8 @@ class ReserveOutRailCarcassMonitoringLogController extends Controller
                 })->get()->toArray());
             
             }else{
-                $data = ReserveOutRailCarcassMonitoringLog::with('users')->where('reserve_out_rail_carcass_monitoring_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-                $total=count(ReserveOutRailCarcassMonitoringLog::with('users')->where('reserve_out_rail_carcass_monitoring_logs.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+                $data = ReserveOutRailCarcassMonitoringLog::with('users')->where('reserve_out_rails.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(ReserveOutRailCarcassMonitoringLog::with('users')->where('reserve_out_rails.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
             }
             
         }else{
