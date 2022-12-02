@@ -31,7 +31,7 @@ class SlugtherCcpProxyCeticAcidLogsTable extends Migration
         'director_general_evaluation',
         'name_director',
         'time_director_aprobation',*/
-        Schema::create('slugther_proxy_acids', function (Blueprint $table) { //slugther_ccp_proxy_cetic_acid_logs
+        Schema::create('slugther_peroxy_acids', function (Blueprint $table) { //slugther_ccp_proxy_cetic_acid_logs
             $table->id();
             $table->integer('first_carcase_id_number');
             $table->date('date');
@@ -58,6 +58,9 @@ class SlugtherCcpProxyCeticAcidLogsTable extends Migration
             $table->foreign('correctuve_action_id')->references('id')->on('relapse_actions')->onDelete("cascade");
       
             $table->foreign('preventive_action_id')->references('id')->on('preventive_actions')->onDelete("cascade");
+
+            $table->bigInteger('users_id')->unsigned();
+            $table->foreign('users_id')->references('id')->on('users')->onDelete("cascade");
     
             $table->timestamps();
             });

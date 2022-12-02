@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class VisualCheckSpinalCordAndSheath extends Model
 {
     use HasFactory;
+    protected $table = 'visual_sheaths'; 
         /**
      * The attributes that are mass assignable.
      *

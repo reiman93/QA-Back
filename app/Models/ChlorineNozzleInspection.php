@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class ChlorineNozzleInspection extends Model
 {
     use HasFactory;
+    protected $table = 'chlorine_nozzles'; 
         /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'auditor_user_id', //auditor_user_id
-       
+        'auditor_user_id', 
         'date',
         'action',
         'period',
@@ -27,4 +27,9 @@ class ChlorineNozzleInspection extends Model
         'chlorine_added',
         'comments'
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class,'auditor_user_id');
+    }
 }

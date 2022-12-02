@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SlaogtherOperationalSanitationSOPLogSheetSupplemental extends Model
 {
     use HasFactory;
+    protected $table = 'slaugther_sheet_suppls'; 
     /**
  * The attributes that are mass assignable.
  *

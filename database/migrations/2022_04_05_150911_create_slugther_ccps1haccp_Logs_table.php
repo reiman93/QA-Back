@@ -62,6 +62,9 @@ class CreateSlugtherCcps1haccpLogsTable extends Migration
       
             $table->foreign('preventive_action_id')->references('id')->on('preventive_actions')->onDelete("cascade");
 
+            $table->bigInteger('users_id')->unsigned();
+            $table->foreign('users_id')->references('id')->on('users')->onDelete("cascade");
+
             $table->timestamps();
         });
     }

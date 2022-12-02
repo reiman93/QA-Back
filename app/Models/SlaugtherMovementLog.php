@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SlaugtherMovementLog extends Model
 {
     use HasFactory;
+    protected $table = 'slaugther_movements'; 
         /**
      * The attributes that are mass assignable.
      *

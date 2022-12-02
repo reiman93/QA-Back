@@ -294,11 +294,10 @@ Route::post('/storeVisualSpinalCord', [VisualCheckSpinalCordAndSheathController:
 
 Route::apiResource('ccp-peroaxycetic', SlugtherCcpProxyCeticAcidLogController::class)->middleware('api');
 Route::post('/storeSCCPeroxicetic', [SlugtherCcpProxyCeticAcidLogController::class,'paginateFilter'])->name('SCCPeroxicetic');
-Route::post('/deleteSCCPeroxicetic');
 
 /*SlugtherCCPS1HACCPLogController*/
 Route::apiResource('ccp-s1haccp', SlugtherCCPS1HACCPLogController::class)->middleware('api');
-Route::post('/storeSlugtherCCPS1HACCPLog', [SlugtherCCPS1HACCPLogController::class,'paginateFilter'])->name('SlugtherCCPS1HACCPLog');
+Route::post('/storeSlugtherHACCPLog', [SlugtherCCPS1HACCPLogController::class,'paginateFilter'])->name('storeSlugtherHACCPLog');
 
 Route::apiResource('sop-suplements', SopLogSheetSupplementalController::class)->middleware('api');
 Route::post('/storeSOPLogSSP', [SopLogSheetSupplementalController::class,'paginateFilter'])->name('SOPLogSSP');

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class QualityAssuranceKosherCheckList extends Model
 {
     use HasFactory;
+    protected $table = 'quality_assurances'; 
         /**
      * The attributes that are mass assignable.
      *

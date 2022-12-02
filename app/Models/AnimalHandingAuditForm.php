@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AnimalHandingAuditForm extends Model
 {
     use HasFactory;
+    protected $table = 'animal_handings'; 
         /**
      * The attributes that are mass assignable.
      *

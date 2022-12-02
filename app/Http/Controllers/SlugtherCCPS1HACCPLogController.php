@@ -15,32 +15,13 @@ class SlugtherCcps1haccpLogController extends Controller
      */
     public function index(Request $request)
     {
-        /*  if($request->limit){
-         $limit=$request->limit;
-       }else{
-           $limit=5;
-       }
-       if($request->offset){
-         $offset=$request->offset;
-       }else{
-           $offset=0;
-       }*/
-      // $data = SlugtherCcps11haccpLog::all()->skip($offset)->take($limit);
        $data = SlugtherCcps1haccpLog::all();
-     /*  $total=count(SlugtherCcps11haccpLog::all());
-       $cantPages=intdiv($total,$limit);
-       $resto=($total%$limit);
-       if($resto > 0){
-        $cantPages++;
-       }*/
-       
         if($request->wantsJson()){
             return response()->json(array('data'=>$data,'success'=>true,'status'=>200));//'cantPages'=>$cantPages,'offset'=>$offset
         }else{
             return view('modules.SlugtherCcps11haccpLog.index',compact('data','offset','cantPages','total'));
         }
     }
-
   /**
      * Data with pagin and filters.
      *
@@ -49,16 +30,6 @@ class SlugtherCcps1haccpLogController extends Controller
      */
     public function paginateFilter(Request $request)
     {
-       /* if($request->take){
-            $limit=$request->take;
-          }
-
-          if($request->skip){
-            $offset=$request->skip;
-          }else{
-              $offset=0;
-          }*/
-         // $currentPage=intval($request->currentPage);
         if($request->orSearchFields){
             switch ($request->orSearchFields[0]['operation']) {
                 case 'distint':
@@ -76,25 +47,31 @@ class SlugtherCcps1haccpLogController extends Controller
                     
                     break;
             }
-            $data = SlugtherCcps1haccpLog::where('slugther_ccps1.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = SlugtherCcps1haccpLog::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(SlugtherCcps1haccpLog::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = SlugtherCcps1haccpLog::with('users')->where('slugther_ccps1.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(SlugtherCcps1haccpLog::with('users')->where('slugther_ccps1.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
         }else{
-            $data = SlugtherCcps1haccpLog::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = SlugtherCcps1haccpLog::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(SlugtherCcps1haccpLog::all());
         }
       
-         
-          $total=count(SlugtherCcps1haccpLog::all());
-         // $cantPages=intdiv($total,$limit);
-         // $resto=($total%$limit);
-         // $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-         /* if($resto > 0){
-           $cantPages++;
-          }*/
            if($request->wantsJson()){
-              // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
                return response()->json(array('data'=>array('slugther_ccps1'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
-            }else{
-              // return view('modules.SlugtherCcps11haccpLog.index',compact('data','offset','cantPages','total'));
-           }
+            }
     }
 
 
@@ -141,12 +118,9 @@ class SlugtherCcps1haccpLogController extends Controller
             'time_director_aprobation'
         ]);
 
-
-       // $request['date']=date('Y-m-d');//strtotime($request['date']);
         $user_data = User::where('users.username','=', $request->monitor_name )->get()->toArray();
-        $request['monitor_name']=$user_data[0]['id'];
+        $request['users_id']=$user_data[0]['id'];
 
-        $request->state="Pendiente";
         $data= SlugtherCcps1haccpLog::create($request->except('_token'));
         if($request->wantsJson()){
             return response()->json($data,200); 

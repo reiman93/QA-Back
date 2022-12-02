@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Sample_request_forms extends Model
 {
     use HasFactory;
+    protected $table = 'sample_req_forms';
 
     /**
    * The attributes that are mass assignable.

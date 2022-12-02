@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SlugtherCCPPeroxyceticAcidMonitoringLog extends Model
 {
     use HasFactory;
+    protected $table = 'slugther_peroxy_acids'; 
 
            /**
      * The attributes that are mass assignable.
@@ -33,5 +34,16 @@ class SlugtherCCPPeroxyceticAcidMonitoringLog extends Model
         'director_general_evaluation',//1
         'name_director',//1
         'time_director_aprobation',//1
+        'users_id'
     ];
+
+         /**
+     * Get the User that owns the Pre_operational_sanitation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class,'users_id');
+    }
 }

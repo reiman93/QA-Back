@@ -27,6 +27,10 @@ class CreateRandomAuditSampleTimesTable extends Migration
             $table->time('random_time');
             $table->time('random_num');
             $table->string('random_code');
+
+            $table->bigInteger('users_id')->unsigned();
+            $table->foreign('users_id')->references('id')->on('users')->onDelete("cascade");
+
             $table->timestamps();
         });
     }

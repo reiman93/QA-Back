@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ReserveOutRailCarcassMonitoringLog extends Model
 {
     use HasFactory;
+    protected $table = 'reserve_out_rails';
         /**
      * The attributes that are mass assignable.
      *

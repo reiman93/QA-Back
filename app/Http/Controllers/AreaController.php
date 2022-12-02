@@ -162,7 +162,7 @@ class AreaController extends Controller
         }
         }else{
             $data = Area::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
-            foreach ($data as $key => $value) {
+           foreach ($data as $key => $value) {
                 $prep =  Pre_operational_sanitation::latest()->with('users')->where(
                    [ [ "areas_id","=" ,$value['id'] ],[ "date","=" ,date('Y-m-d')] ]
                     )->take(1)->get()->toArray();

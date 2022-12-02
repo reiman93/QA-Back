@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SlugtherFloorGattleChangeMonitorSheet extends Model
 {
     use HasFactory;
+    protected $table = 'slugther_floor_gattles'; 
         /**
      * The attributes that are mass assignable.
      *

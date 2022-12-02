@@ -15,26 +15,8 @@ class ChlorineNozzleInspectionController extends Controller
      */
     public function index(Request $request)
     {
-   
-      /*  if($request->limit){
-         $limit=$request->limit;
-       }else{
-           $limit=5;
-       }
-       if($request->offset){
-         $offset=$request->offset;
-       }else{
-           $offset=0;
-       }*/
-      // $data = ChlorineNozzleInspection::all()->skip($offset)->take($limit);
-       $data = ChlorineNozzleInspection::all();
-     /*  $total=count(ChlorineNozzleInspection::all());
-       $cantPages=intdiv($total,$limit);
-       $resto=($total%$limit);
-       if($resto > 0){
-        $cantPages++;
-       }*/
-       
+        $data = ChlorineNozzleInspection::all();
+
         if($request->wantsJson()){
             return response()->json(array('data'=>$data,'success'=>true,'status'=>200));//'cantPages'=>$cantPages,'offset'=>$offset
         }else{
@@ -50,16 +32,6 @@ class ChlorineNozzleInspectionController extends Controller
      */
     public function paginateFilter(Request $request)
     {
-       /* if($request->take){
-            $limit=$request->take;
-          }
-
-          if($request->skip){
-            $offset=$request->skip;
-          }else{
-              $offset=0;
-          }*/
-         // $currentPage=intval($request->currentPage);
         if($request->orSearchFields){
             switch ($request->orSearchFields[0]['operation']) {
                 case 'distint':
@@ -77,25 +49,31 @@ class ChlorineNozzleInspectionController extends Controller
                     
                     break;
             }
-            $data = ChlorineNozzleInspection::where('chlorine_nozzles.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = ChlorineNozzleInspection::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(ChlorineNozzleInspection::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = ChlorineNozzleInspection::with('users')->where('chlorine_nozzles.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(ChlorineNozzleInspection::with('users')->where('chlorine_nozzles.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
         }else{
-            $data = ChlorineNozzleInspection::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = ChlorineNozzleInspection::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(ChlorineNozzleInspection::all());
         }
       
-         
-          $total=count(ChlorineNozzleInspection::all());
-         // $cantPages=intdiv($total,$limit);
-         // $resto=($total%$limit);
-         // $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-         /* if($resto > 0){
-           $cantPages++;
-          }*/
            if($request->wantsJson()){
-              // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
                return response()->json(array('data'=>array('chlorine_nozzles'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
-            }else{
-              // return view('modules.ChlorineNozzleInspection.index',compact('data','offset','cantPages','total'));
-           }
+            }
     }
 
 
@@ -135,9 +113,7 @@ class ChlorineNozzleInspectionController extends Controller
             'chlorine_added' => 'required',
             'comments' => 'required'
         ]);
-      //  var_dump($request['auditor_user_id']);
-        $request['date']=date('Y-m-d');//strtotime($request['date']);
-    
+      //  var_dump($request['auditor_user_id'])
         $user_data = User::where('users.username','=', $request->auditor_user_id)->get()->toArray();
 
         $request['auditor_user_id']=$user_data[0]['id'];

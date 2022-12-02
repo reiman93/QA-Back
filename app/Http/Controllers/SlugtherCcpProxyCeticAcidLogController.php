@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\SlugtherCcpProxyCeticAcidLog;
+use App\Models\SlugtherCCPPeroxyceticAcidMonitoringLog;
 
 class SlugtherCcpProxyCeticAcidLogController extends Controller
 {
@@ -15,30 +15,11 @@ class SlugtherCcpProxyCeticAcidLogController extends Controller
      */
     public function index(Request $request)
     {
-   
-      /*  if($request->limit){
-         $limit=$request->limit;
-       }else{
-           $limit=5;
-       }
-       if($request->offset){
-         $offset=$request->offset;
-       }else{
-           $offset=0;
-       }*/
-      // $data = SlugtherCcpProxyCeticAcidLog::all()->skip($offset)->take($limit);
-       $data = SlugtherCcpProxyCeticAcidLog::all();
-     /*  $total=count(SlugtherCcpProxyCeticAcidLog::all());
-       $cantPages=intdiv($total,$limit);
-       $resto=($total%$limit);
-       if($resto > 0){
-        $cantPages++;
-       }*/
-       
+       $data = SlugtherCCPPeroxyceticAcidMonitoringLog::all();
         if($request->wantsJson()){
             return response()->json(array('data'=>$data,'success'=>true,'status'=>200));//'cantPages'=>$cantPages,'offset'=>$offset
         }else{
-            return view('modules.SlugtherCcpProxyCeticAcidLog.index',compact('data','offset','cantPages','total'));
+            return view('modules.SlugtherCCPPeroxyceticAcidMonitoringLog.index',compact('data','offset','cantPages','total'));
         }
     }
 
@@ -50,16 +31,6 @@ class SlugtherCcpProxyCeticAcidLogController extends Controller
      */
     public function paginateFilter(Request $request)
     {
-       /* if($request->take){
-            $limit=$request->take;
-          }
-
-          if($request->skip){
-            $offset=$request->skip;
-          }else{
-              $offset=0;
-          }*/
-         // $currentPage=intval($request->currentPage);
         if($request->orSearchFields){
             switch ($request->orSearchFields[0]['operation']) {
                 case 'distint':
@@ -77,25 +48,31 @@ class SlugtherCcpProxyCeticAcidLogController extends Controller
                     
                     break;
             }
-            $data = SlugtherCcpProxyCeticAcidLog::where('slugther_proxy_acids.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = SlugtherCCPPeroxyceticAcidMonitoringLog::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(SlugtherCCPPeroxyceticAcidMonitoringLog::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = SlugtherCCPPeroxyceticAcidMonitoringLog::with('users')->where('slugther_peroxy_acids.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(SlugtherCCPPeroxyceticAcidMonitoringLog::with('users')->where('slugther_peroxy_acids.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
         }else{
-            $data = SlugtherCcpProxyCeticAcidLog::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = SlugtherCCPPeroxyceticAcidMonitoringLog::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(SlugtherCCPPeroxyceticAcidMonitoringLog::all());
         }
       
-         
-          $total=count(SlugtherCcpProxyCeticAcidLog::all());
-         // $cantPages=intdiv($total,$limit);
-         // $resto=($total%$limit);
-         // $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-         /* if($resto > 0){
-           $cantPages++;
-          }*/
            if($request->wantsJson()){
-              // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-               return response()->json(array('data'=>array('SlugtherCcpProxyCeticAcidLog'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
-            }else{
-              // return view('modules.SlugtherCcpProxyCeticAcidLog.index',compact('data','offset','cantPages','total'));
-           }
+               return response()->json(array('data'=>array('peroxy_acids'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+            }
     }
 
 
@@ -108,9 +85,9 @@ class SlugtherCcpProxyCeticAcidLogController extends Controller
     public function create()
     {
         /*cat=Categoria::pluck('nombre','id')
-        return view('modules.SlugtherCcpProxyCeticAcidLog.create',compact('libro','categoria'));
+        return view('modules.SlugtherCCPPeroxyceticAcidMonitoringLog.create',compact('libro','categoria'));
         */
-        return view('modules.SlugtherCcpProxyCeticAcidLog.create');
+        return view('modules.SlugtherCCPPeroxyceticAcidMonitoringLog.create');
     }
 
   
@@ -144,50 +121,50 @@ class SlugtherCcpProxyCeticAcidLogController extends Controller
 
 
         $user_data = User::where('users.username','=', $request->monitor_name )->get()->toArray();
-        $request['monitor_name']=$user_data[0]['id'];
+        $request['users_id']=$user_data[0]['id'];
 
-        $data= SlugtherCcpProxyCeticAcidLog::create($request->except('_token'));
+        $data= SlugtherCCPPeroxyceticAcidMonitoringLog::create($request->except('_token'));
         if($request->wantsJson()){
             return response()->json($data,200); 
         }else{
-           return redirect('SlugtherCcpProxyCeticAcidLog');
+           return redirect('SlugtherCCPPeroxyceticAcidMonitoringLog');
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SlugtherCcpProxyCeticAcidLog  $SlugtherCcpProxyCeticAcidLog
+     * @param  \App\Models\SlugtherCCPPeroxyceticAcidMonitoringLog  $SlugtherCCPPeroxyceticAcidMonitoringLog
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request,$id)
     {
-        $data=SlugtherCcpProxyCeticAcidLog::findOrfail($id);
+        $data=SlugtherCCPPeroxyceticAcidMonitoringLog::findOrfail($id);
         if($request->wantsJson()){
             return response()->json(array('data'=>$data,'success'=>true),200); 
         }else{
-            return view('modules.SlugtherCcpProxyCeticAcidLog.show',compact('data'));
+            return view('modules.SlugtherCCPPeroxyceticAcidMonitoringLog.show',compact('data'));
         }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SlugtherCcpProxyCeticAcidLog  $SlugtherCcpProxyCeticAcidLog
+     * @param  \App\Models\SlugtherCCPPeroxyceticAcidMonitoringLog  $SlugtherCCPPeroxyceticAcidMonitoringLog
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
        
-        $data=SlugtherCcpProxyCeticAcidLog::findOrfail($id);    
-        return view('modules.SlugtherCcpProxyCeticAcidLog.edit',compact('data'));
+        $data=SlugtherCCPPeroxyceticAcidMonitoringLog::findOrfail($id);    
+        return view('modules.SlugtherCCPPeroxyceticAcidMonitoringLog.edit',compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SlugtherCcpProxyCeticAcidLog  $SlugtherCcpProxyCeticAcidLog
+     * @param  \App\Models\SlugtherCCPPeroxyceticAcidMonitoringLog  $SlugtherCCPPeroxyceticAcidMonitoringLog
      * @return \Illuminate\Http\Response
      */
     public function updateState(Request $request,$id)
@@ -195,7 +172,7 @@ class SlugtherCcpProxyCeticAcidLogController extends Controller
         $request->validate([
             'state' => 'required',
         ]);
-         SlugtherCcpProxyCeticAcidLog::where('id','=',$id)->update($request->except('_token','_method'));
+         SlugtherCCPPeroxyceticAcidMonitoringLog::where('id','=',$id)->update($request->except('_token','_method'));
                        
             if($request->wantsJson()){
             return response()->json(null,200);
@@ -205,7 +182,7 @@ class SlugtherCcpProxyCeticAcidLogController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SlugtherCcpProxyCeticAcidLog  $SlugtherCcpProxyCeticAcidLog
+     * @param  \App\Models\SlugtherCCPPeroxyceticAcidMonitoringLog  $SlugtherCCPPeroxyceticAcidMonitoringLog
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request,$id)
@@ -228,35 +205,35 @@ class SlugtherCcpProxyCeticAcidLogController extends Controller
             'name_director'=> 'required',
             'time_director_aprobation' => 'required',
         ]);
-         SlugtherCcpProxyCeticAcidLog::where('id','=',$id)->update($request->except('_token','_method'));
+         SlugtherCCPPeroxyceticAcidMonitoringLog::where('id','=',$id)->update($request->except('_token','_method'));
                        
             if($request->wantsJson()){
             return response()->json(null,200);
             }else{
-                return redirect()->route('SlugtherCcpProxyCeticAcidLog.index');
+                return redirect()->route('SlugtherCCPPeroxyceticAcidMonitoringLog.index');
             }   
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SlugtherCcpProxyCeticAcidLog  $SlugtherCcpProxyCeticAcidLog
+     * @param  \App\Models\SlugtherCCPPeroxyceticAcidMonitoringLog  $SlugtherCCPPeroxyceticAcidMonitoringLog
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request,$id)
     {
-       SlugtherCcpProxyCeticAcidLog::findOrfail($id)->delete();
+       SlugtherCCPPeroxyceticAcidMonitoringLog::findOrfail($id)->delete();
        return response()->json(array('success'=>true),200);
     }
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SlugtherCcpProxyCeticAcidLog  $SlugtherCcpProxyCeticAcidLog
+     * @param  \App\Models\SlugtherCCPPeroxyceticAcidMonitoringLog  $SlugtherCCPPeroxyceticAcidMonitoringLog
      * @return \Illuminate\Http\Response
      */
     public function deleteMulty(Request $request)
     {
-        SlugtherCcpProxyCeticAcidLog::whereIn('id',$request->ids)->delete();
+        SlugtherCCPPeroxyceticAcidMonitoringLog::whereIn('id',$request->ids)->delete();
        return response()->json(array('success'=>true),200);
     }
 

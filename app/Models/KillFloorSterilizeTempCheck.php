@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class KillFloorSterilizeTempCheck extends Model
 {
     use HasFactory;
+    protected $table = 'kill_floor_temps';
             /**
      * The attributes that are mass assignable.
      *

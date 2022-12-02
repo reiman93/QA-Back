@@ -26,8 +26,8 @@ class Area extends Model
    *
    * @return \Illuminate\Database\Eloquent\Relations\HasMany
    */
-  public function pre_operational_sanitation()
+  public function pre_oper_sanitations()
   {
-      return $this->hasMany(Pre_operational_sanitation::class,'areas_id');
+      return $this->hasMany(Pre_operational_sanitation::class,'pre_oper_sanittions_id');
   }
 }

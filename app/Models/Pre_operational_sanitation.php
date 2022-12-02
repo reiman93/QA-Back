@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pre_operational_sanitation extends Model
 {
     use HasFactory;
-
+    protected $table = 'pre_oper_sanitations';
       /**
      * The attributes that are mass assignable.
      *

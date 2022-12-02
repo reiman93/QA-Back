@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class QAHoldTagLog extends Model
 {
     use HasFactory;
+    protected $table = 'hold_tag_logs'; 
         /**
      * The attributes that are mass assignable.
      *

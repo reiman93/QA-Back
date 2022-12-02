@@ -32,7 +32,7 @@ class SlugtherCCPS3LacticAcidMonitoringLogController extends Controller
         }
     }
 
-  /**
+   /**
      * Data with pagin and filters.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -40,16 +40,6 @@ class SlugtherCCPS3LacticAcidMonitoringLogController extends Controller
      */
     public function paginateFilter(Request $request)
     {
-       /* if($request->take){
-            $limit=$request->take;
-          }
-
-          if($request->skip){
-            $offset=$request->skip;
-          }else{
-              $offset=0;
-          }*/
-         // $currentPage=intval($request->currentPage);
         if($request->orSearchFields){
             switch ($request->orSearchFields[0]['operation']) {
                 case 'distint':
@@ -67,25 +57,31 @@ class SlugtherCCPS3LacticAcidMonitoringLogController extends Controller
                     
                     break;
             }
-            $data = SlugtherCCPS3LacticAcidMonitoringLog::where('slugther_lactic_acids.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $this->operator= $operator;
+            $this->search= $search;
+
+            if($request->orSearchFields[0]['field']=="users"){
+                $data = SlugtherCCPS3LacticAcidMonitoringLog::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+               
+                $total=count(SlugtherCCPS3LacticAcidMonitoringLog::with('users')->whereHas('users',function($u){
+                    $u->where('name',$this->operator,$this->search);
+                })->get()->toArray());
+            
+            }else{
+                $data = SlugtherCCPS3LacticAcidMonitoringLog::with('users')->where('slugther_lactic_acids.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+                $total=count(SlugtherCCPS3LacticAcidMonitoringLog::with('users')->where('slugther_lactic_acids.'.$request->orSearchFields[0]['field'], $operator, $search)->get()->toArray());
+            }
+            
         }else{
-            $data = SlugtherCCPS3LacticAcidMonitoringLog::all()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $data = SlugtherCCPS3LacticAcidMonitoringLog::with('users')->get()->skip(intval($request->skip))->take(intval($request->take))->toArray();
+            $total=count(SlugtherCCPS3LacticAcidMonitoringLog::all());
         }
       
-         
-          $total=count(SlugtherCCPS3LacticAcidMonitoringLog::all());
-         // $cantPages=intdiv($total,$limit);
-         // $resto=($total%$limit);
-         // $cantItemsDisplayed=count($data)+($limit*($currentPage-1));
-         /* if($resto > 0){
-           $cantPages++;
-          }*/
            if($request->wantsJson()){
-              // return response()->json(array('data'=>$data,'cantPages'=>$cantPages,'offset'=>$offset,'total'=>$total,'cantItemsDisplayed'=>$cantItemsDisplayed,'success'=>true,200));
-               return response()->json(array('data'=>array('SlugtherCCPS3LacticAcidMonitoringLog'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
-            }else{
-              // return view('modules.SlugtherCCPS3LacticAcidMonitoringLog.index',compact('data','offset','cantPages','total'));
-           }
+               return response()->json(array('data'=>array('lactic_acids'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+            }
     }
 
 
@@ -131,28 +127,8 @@ class SlugtherCCPS3LacticAcidMonitoringLogController extends Controller
             'name_director',
             'time_director_aprobation',
         ]);
-
         $user_data = User::where('users.username','=', $request->monitor_name )->get()->toArray();
-        $request['monitor_name']=$user_data[0]['id'];
-
-  //      $user_data = User::where('users.username','=', $request->visualizar_name )->get()->toArray();
-  //      $request['visualizar_name']=$user_data[0]['id'];
-
-  //      $user_data = User::where('users.username','=', $request->pre_shipment_name )->get()->toArray();
-  //      $request['pre_shipment_name']=$user_data[0]['id'];
-
-        
-       /* $user_data = User::where('users.username','=', $request->name_director )->get()->toArray();
-        $request['name_director']=$user_data[0]['id'];*/
- 
-
-    /*  $relepse = Relapse_action::where('relapse_actions.name','=', $request->correctuve_action_id)->get()->toArray();
-
-      $request['correctuve_action_id']=$relepse[0]['id'];
-
-      $relepse = PreventiveAction::where('preventive_actions.name','=', $request->preventive_action_id)->get()->toArray();
-
-      $request['preventive_action_id']=$relepse[0]['id'];*/
+        $request['users_id']=$user_data[0]['id'];
 
         $data= SlugtherCCPS3LacticAcidMonitoringLog::create($request->except('_token'));
         if($request->wantsJson()){

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 use App\Models\RandomAuditSampleTime;
 
 use Illuminate\Http\Request;
@@ -88,7 +89,7 @@ class RandomAuditSampleTimeController extends Controller
         }
       
            if($request->wantsJson()){
-               return response()->json(array('data'=>array('random_audit'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
+               return response()->json(array('data'=>array('random_audits'=>array('count'=>$total,'items'=>$data)),'success'=>true,200));
             }
     }
 
@@ -122,8 +123,10 @@ class RandomAuditSampleTimeController extends Controller
             'random_time',
             'random_num',
             'random_code',
+            'users_id'
         ]);
-
+        $user_data = User::where('users.username','=', $request->users_id)->get()->toArray();
+        $request['users_id']=$user_data[0]['id'];
         $data= RandomAuditSampleTime::create($request->except('_token'));
         if($request->wantsJson()){
             return response()->json($data,200); 

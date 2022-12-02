@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class RandomAuditSampleTime extends Model
 {
     use HasFactory;
+    protected $table = 'random_audits'; 
+    
     protected $fillable = [
         'date',
         'verification_type',

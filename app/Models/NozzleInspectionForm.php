@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class NozzleInspectionForm extends Model
 {
     use HasFactory;
+    protected $table = 'nozzle_inspections'; 
           /**
      * The attributes that are mass assignable.
      *
@@ -20,12 +21,15 @@ class NozzleInspectionForm extends Model
         'period',
         'time',
         'lactic_mp3',
-
         'nozzals_working',
         'plugged_nozzles',
         'propper_alications',
         'product_sprend_out',
-
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class,'auditor');
+    }
 
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SlugtherFloorVisualCheck extends Model
 {
     use HasFactory;
+    protected $table = 'slugther_floor_visuals'; 
         /**
      * The attributes that are mass assignable.
      *
